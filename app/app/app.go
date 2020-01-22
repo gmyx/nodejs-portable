@@ -134,7 +134,6 @@ cd "%nodejsWork%"
 ` + strings.Join(args, " ") + `
 exit
 ` //exit works in cmd and ps
-util.Print(launchScript)
 	}
 
 	return launchScript
