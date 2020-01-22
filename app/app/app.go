@@ -120,8 +120,8 @@ SET npmGlobalConfigFilePath=%npmPath%\npmrc
 
 SET PATH=%nodejsPath%;%PATH%
 cd "%nodejsWork%"
-"%nodejsPath%\nodevars.bat"
-"%nodejsPath%\npm.cmd" config set globalconfig "%npmGlobalConfigFilePath%" --global`
+call "%nodejsPath%\nodevars.bat"
+call "%nodejsPath%\npm.cmd" config set globalconfig "%npmGlobalConfigFilePath%" --global`
 
 	launchScript := strings.Replace(launchScriptTpl, "@WORK_PATH@", workPath, -1)
 	launchScript = strings.Replace(launchScript, "@NODEJS_PATH@", nodePath, -1)
