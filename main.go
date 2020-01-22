@@ -41,7 +41,11 @@ func init() {
 func main() {
 	// pass args directly to node.exe and exit
 	if len(os.Args[1:]) > 0 {
-		node(os.Args[1:]...)
+		if app.Conf.UseShell != true {
+			node(os.Args[1:]...)
+		} else {
+			shell(os.Args[1:]...)
+		}
 		return
 	}
 
@@ -235,7 +239,7 @@ func shell(args ...string) error {
 	// create launch script
 	util.Print("Creating launch script... ")
 	launchScript := fs.Join(pathu.TmpPath, "launch.bat")
-	if err := util.CreateFile(launchScript, app.GetLaunchScriptContent()); err != nil {
+	if err := util.CreateFile(launchScript, app.GetLaunchScriptContent(args...)); err != nil {
 		util.PrintError(err)
 		return nil
 	}

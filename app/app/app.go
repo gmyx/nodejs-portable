@@ -29,6 +29,7 @@ type ConfStruct struct {
 	WorkPath      string   `json:"workPath"`
 	CustomPaths   []string `json:"customPaths"`
 	ClearScreen   bool     `json:"clearScreen"`
+	UseShell      bool     `json:"useShell"`
 }
 
 func init() {
@@ -105,7 +106,7 @@ func init() {
 }
 
 // GetLaunchScriptContent is executed while launching shell
-func GetLaunchScriptContent() string {
+func GetLaunchScriptContent(args ...string) string {
 	workPath := fs.FormatWinPath(fs.RemoveUnc(Conf.WorkPath))
 	nodePath := fs.FormatWinPath(fs.RemoveUnc(pathu.AppPath))
 
@@ -124,6 +125,17 @@ cd "%nodejsWork%"
 
 	launchScript := strings.Replace(launchScriptTpl, "@WORK_PATH@", workPath, -1)
 	launchScript = strings.Replace(launchScript, "@NODEJS_PATH@", nodePath, -1)
+
+	if Conf.UseShell == true {
+		//add the params and then en exit
+		util.Print("Adding command line parameters... ")
+
+		launchScript += `
+` + strings.Join(args, " ") + `
+exit
+` //exit works in cmd and ps
+util.Print(launchScript)
+	}
 
 	return launchScript
 }
